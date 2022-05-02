@@ -1,127 +1,139 @@
 package Player;
-import java.util.ArrayList;
-//import java.util.stream.Collectors;
 
 import Elements.Robot;
 
-
+import java.util.ArrayList;
 
 public class Hand {
-	private int capacity;
-	private ArrayList<Card> cards;
-	private int spaces;
-	private Card[] order;
+    private int capacity;
+    private ArrayList<Card> cards;
+    private Card[] order;
+    private int spaces;
 
-	// constructor for the hand, so that it is initialised with the following things
-	public Hand(int capacity) {
-		this.capacity = capacity;
-		cards = new ArrayList<Card>(capacity);
-		cards.ensureCapacity(capacity);
-		order = new Card[capacity];
-		spaces = capacity;
-	}
+    //constructor Instantiates Arraylist and List reference to cards and order, assign them the size of capacity
+    public Hand(int capacity) { // used
+        this.capacity = capacity;
+        cards = new ArrayList<Card>(capacity);
+        cards.ensureCapacity(capacity);
+        order = new Card[capacity];
+        spaces = capacity;
+    }
 
-	// empty hand, used for testing scenarios
-	public void empty() {
-		cards.clear();
-	} // used
+    //empties hand of cards/the list
+    public void empty() {
+        cards.clear();
+    } // used
 
-	// a boolean that checks if there are any cards left on hand
-	public boolean isEmpty() {
-		return (cards.isEmpty());
-	} // used
+    //checks if the list is empty
+    public boolean isEmpty() {
+        return (cards.isEmpty());
+    } // used
 
-	// getter for the amount of spaces on hand
-	public int getSpaces() {
-		return capacity - cards.size();
-	} // used
+    //get the amount of free space in hand
+    public int getSpaces() {
+        return capacity - cards.size();
+    } // used
 
-	// drawing cards from the deck
-	public void draw(Deck deck) {
-		cards.add(deck.draw());
-	} // used
+    //method calls deck.draw from deck, to draw a random card, and att it to han
+    public void draw(Deck deck) {
+        cards.add(deck.draw());
+    } // used
 
-	// a boolean that checks if the card is of a certain type
-	public boolean contains(Card card) {
-		return cards.contains(card);
-	}
-	// fills the hand with cards from the deck, as long as there are free spots on the hand
-	public void fill(Deck deck) { // used
-		if (getSpaces() > 0) {
-			draw(deck);
-			fill(deck);
-		}
-	}
-	// gets the position for a certain type of card from the hand
-	public int getPosition(Card card) {
-		for(int i = 0; i < capacity; i++) {
-			if(order[i] == card) return i;
-		}
-		return capacity;
-	}
+    //used in testing, check if card is on hand
+    public boolean contains(Card card) {
+        return cards.contains(card);
+    } // used
 
-	// set po
-	public void setPosition(Card card, int i) {
-		int old = getPosition(card);
-		if(i >= capacity) return;
-		if (order[i] == null) {
-			order[i] = card;
-		} else {
-			Card c = order[i];
-			order[i] = card;
-			if(old < capacity) order[old] = c;
-		}
-	}
+    //fills the hand with random cards from deck
+    public void fill(Deck deck) { // used
+        if (getSpaces() > 0) {
+            draw(deck);
+            fill(deck);
+        }
+    }
 
-	public String[] getTitles() {
-		String[] titles = new String[capacity];
-		int i = 0;
-		for(Card c : cards) {
-			titles[i] = c.getTitle();
-			i++;
-		}
-		return titles;
-	}
+    //returns the position of a card
+    public int getPosition(Card card) {
+        for(int i = 0; i < capacity; i++) {
+            if(order[i] == card) return i;
+        }
+        return capacity;
+    }
+    //sets new position for the chosen card
+    public void setPosition(Card card, int i) { // not used
+        int old = getPosition(card); //2
+        if(i >= capacity) return;
+        if (order[i] == null) {
+            order[i] = card;
+            System.out.println(order[i].getTitle());
+//            if(old < capacity) order[old] = null;
+        }
+        else {
+            Card c = order[i];
+            order[i] = card;
+            //careful with this one, cards just get shoved down in the order if a new card is inserted at their place
+            if(old < capacity) order[old] = c;
+            else setPosition(c,i+1);
+        }
+    }
 
-	public Card findCard(String title){
-		return (cards.stream().filter(o -> o.getTitle().equals(title)).findFirst().orElse(null));
-	}
+    //instantiate new list for order
+    public void ordered(boolean b) {
+        if(!b) order = new Card[capacity];
+    } // used
 
-	public void ordered(boolean b) {
-		if(!b) order = new Card[capacity];
-	}
+    //checks if cards is on order, shows that the hand has been order, used in testing
+    public boolean isOrdered() { // used
+        for(int i = 0; i < order.length; i++) {
+            if(order[i] != null) {
+                return true;
+            }
+        }
+        return false; // not used
+    }
 
-	public boolean isOrdered() {
-		for(int i = 0; i < order.length; i++) {
-			if(order[i] == null) {
-				return false;
-			}
-		}
-		return true;
-	}
+    //method used for playing the card
+    public String play(Robot robot) { // used
+        String card;
+        if (order.length > 0) {
+            card = order[0].getTitle();
+            order[0].play(robot);
+            Card[] temp = new Card[order.length-1];
+            if (temp.length > 0) {
+                for (int i = 1; i < order.length; i++) {
+                    temp[i - 1] = order[i];
+                }
+                order = temp;
+            } else {
+                empty();
+                ordered(false);
+            }
+            return card;
+        }
+        return null;
+    }
 
-	public String play(Robot robot) {
-		String card;
-		if(order.length > 0){
-			card = order[0].getTitle();
-			order[0].play(robot);
-			Card[] temp = new Card[order.length-1];
-			if(temp.length>0) {
-				for(int i=1;i<order.length;i++) {
-					temp[i-1] = order[i];
-				}
-				order = temp;
-			} else {
-				empty();
-				ordered(false);
-			}
-			return card;
-		}
-		return null;
-	}
 
-	public Card getCard(int i) {
-		if (i >= capacity) return null;
-		return cards.get(i);
-	}
+    //returns card at a specified index on the cards arraylist
+    public Card getCard(int i) { // not used
+        if(i >= capacity) return null;
+        else if(cards.isEmpty()) return null;
+        return cards.get(i);
+    }
+
+    //returns all titles of the cards, used for testing
+    public String[] getTitles() {
+        String[] titles = new String[capacity];
+        int i = 0;
+        for(Card c : cards) {
+            titles[i] = c.getTitle();
+            i++;
+        }
+        return titles;
+    }
+
+    //returns Card for the given title, if it is on hand
+    public Card findCard(String title){
+        return (cards.stream().filter(o -> o.getTitle().equals(title)).findFirst().orElse(null));
+    }
 }

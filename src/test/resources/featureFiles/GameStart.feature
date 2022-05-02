@@ -17,4 +17,3 @@ Feature: Starting the Game
       | "EASY"     | 1       |  one robot|"bo"   | "--"   |
       | "MEDIUM"   | 2       | two robots|"ib"   | "peter"|
       | "HARD"     | 1       | one robot |"kaj"  | "--"   |
-

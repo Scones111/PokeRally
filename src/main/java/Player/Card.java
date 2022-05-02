@@ -1,112 +1,68 @@
 package Player;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 import Elements.Robot;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Card {
 
     //A list of all cards available
-	static public enum action {
-		move,turnL,turnR;
-		
-		@Override
-		public String toString() {
-			switch(this) {
-			case move: return "move";
-			case turnL: return "turnL";
-			default: return "turnR";
-			}
-		}
-	}
-	
-	private List<action> actions;
-	
+    static public enum action { // used
+        move, turnL, turnR;
+
+        @Override
+        //returns the string describe the move
+        public String toString() { // used
+            switch (this) {
+                case move:
+                    return "move";
+                case turnL:
+                    return "turnL"; // not used
+                default:
+                    return "turnR"; // not used
+            }
+        }
+    }
+
+    private List<action> actions;
+
     private String title;
-    
-    
+
+
+    //constructor, input is used as title for the card
     public Card(String title) {
-    	this.title =  title;
-    }
-    
+        this.title = title;
+    } // used
+
+    //returns the cards title
     public String getTitle() {
-    	return title;
-    }
-    
-    @Override
-    public boolean equals(Object obj) {
-    	if (obj == null) {
-            return false;
-        }
+        return title;
+    } // used
 
-        if (obj.getClass() != this.getClass()) {
-            return false;
-        }
-
-        final Card card = (Card) obj;
-        if(this.title == null || card.getTitle() == null) {
-        	return false;
-        }
-        
-        return (this.title == card.getTitle());
-    }
-    
-//    public void setTitle(String s) {
-//    	title = s;
-//    }
-//    
+    //Used to add the List of actions the card makes the robot do
     public void setAction(List<action> actions) {
-    	this.actions = actions;
-    }
-    
-    public boolean play(Robot robot) {
-    	boolean works = false;
-    	for (action a : actions) {
-    		if( a == action.move) {
-//    			System.out.println("Card 'move'");
-    			robot.moved();
-    			works = true;
-    		}
-    		else if (a == action.turnL){
-//    			System.out.println("Card 'turn left'");
-    			robot.turnL();
-    			works = true;
-    		}
-    		else if( a == action.turnR){
-//    			System.out.println("Card 'turn right'");
-    			robot.turnR();
-    			works = true;
-    		}
-    		}
-    	return works;
-    }
-    
-    public String printActions() {
-    	String str = Arrays.toString(actions.toArray());
-//    	System.out.println(Arrays.toString(actions.toArray()));
-    	return str;
+        this.actions = actions;
+    } // used
+
+    //when player plays a card, the robot will move accordingly to the crds instruction
+    public void play(Robot robot) { // used
+        for (action a : actions) {
+            if( a == action.move){
+                robot.moved();
+            } else if( a == action.turnR){
+                robot.turnR();
+            } else if ( a == action.turnL) {
+                robot.turnL();
+            }
+        }
     }
 
-
-    
-    
-    
-//    protected String[] CardsOnHand = new String[5];
-//    // Should there be a "MoveBackwards"???
-//
-//    //A method that shuffles the cards and prints them out.
-//    public String showRandomCards() {
-//        Random rand = new Random();
-//        int numberOfCards = 5;
-//        for (int i = 0; i < numberOfCards; i++) {
-//            int randomIndex = rand.nextInt(AllCards.size());
-//            String randomCards = AllCards.get(randomIndex);
-//            CardsOnHand[i] = randomCards;
-//        }
-//        System.out.println(Arrays.toString(CardsOnHand));
-//        return null;
-//    }
+    //prints the actions the card does
+    public String printActions() { // used
+        String str = Arrays.toString(actions.toArray());
+        System.out.println(Arrays.toString(actions.toArray()));
+        return str;
+    }
 }
-
 

@@ -1,69 +1,61 @@
 package Gameplay;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Scanner;
-
 import Board.Board;
-import Board.ObstacleFactory;
 import Elements.Robot;
-import Player.Deck;
-import Player.Player;
-import Player.Hand;
+import Board.*;
+import Player.*;
 
+import java.util.ArrayList;
 
 public class GameStart {
-    private int obstacles;
-    private int checkpoints;
-
+	private int obstacles;
+	private int checkpoints;
 	private ArrayList<String> names;
-    private Board board;
+	private Board board;
 	private Game game;
-    private ObstacleFactory factory;
-//    private ArrayList<Robot> robots = new ArrayList<Robot>();
+	private ObstacleFactory factory;
+	private int amountOfPlayers;
 	private String hardness;
-    
-    //constructer initiates Board, Game, ObstacleFactory, ArrayList for names and fills the factory with obstacles
-    public GameStart(){
-		System.out.println("gamestart initiated");
 
+	//constructor GameStart, instantiates Game and Obstacle factory
+	public GameStart() {
 		board = Board.getBoard();
 		game = new Game();
 		factory = new ObstacleFactory();
 		factory.defaultFill();
-
 		names = new ArrayList<>();
 	}
-    
-    int amountOfPlayers;
-    
-    public void setDifficulty(String difficulty) {
-    	switch(difficulty) {
-    		case ("EASY"):
-    			obstacles = (int) (6 + 4 * Math.random());
-    		    checkpoints = 3;
-				hardness = "EASY";
-    		    break;
-    		case ("MEDIUM"):
-    			obstacles = (int) (8 + 6 * Math.random());
-    		    checkpoints = 3;
-				hardness = "MEDIUM";
-    		    break;
-    		case ("HARD"):
-    			obstacles = (int) (14 + 6 * Math.random());
-    		    checkpoints = 2;
-				hardness = "HARD";
-    		    break;
-    	}
-    }
-    
 
-    public void setAmountOfPlayers(int amountOfPlayers) {
-		this.amountOfPlayers = amountOfPlayers;
+	//set the difficulty for the board, sets the amount of obstacles, checkpoint, and instantiate the obstacles
+	public void setDifficulty(String difficulty) {
+		switch(difficulty) {
+			case ("EASY"):
+				obstacles = (int) (6 + 6 * Math.random());
+				checkpoints = (int) (3 + 2 * Math.random());
+				hardness = "EASY";
+				break;
+			case ("MEDIUM"):
+				obstacles = (int) (12 + 6 * Math.random());
+				checkpoints = (int) (1 + 2 * Math.random());
+				hardness = "MEDIUM";
+				break;
+			case ("HARD"):
+				obstacles = (int) (18 + 6 * Math.random());
+				checkpoints = 1;
+				hardness = "HARD";
+				break;
+		}
 	}
 
-	//starts the game, initiates the robots, players, sets the multiplayer and sets the board up
+	public void setAmountOfPlayers(int amountOfPlayers) {
+		this.amountOfPlayers = amountOfPlayers;
+	} // used
+
+	public String getDifficulty() { return hardness;}
+
+	//starts the game, instantiates  robots and players
+	//sets multiplayer true or false and then adds the player and robots
+	//to the game class
 	public Game start() {
 		System.out.println("GameStart.start()...");
 		if(amountOfPlayers == 1) {
@@ -98,28 +90,29 @@ public class GameStart {
 		return game;
 	}
 
-
+	//gets the board, used for testing
 	public Board getBoard() {
 		return board;
-	}
+	} // not used
 
-    public int getAmountofPlayers() {
+	//get amount of players
+	public int getAmountOfPlayers() {
 		return amountOfPlayers;
-    }
+	} // used
 
-	//Used in GUI, adds the name to GameStart for initiation robots from Model
+	//used for adding names to robot
 	public void addName(String name) {
 		names.add(name);
 	}
 
-	//Used in GUI, gets the names given in Model by the player
+	//returns the list of String of the robots names
 	public ArrayList<String> getRobotNames() {
 		return names;
 	}
 
-	public String getDifficulty() { return hardness;}
 
-	public int getAmountOfPlayers() {
+	//
+	public int getAmountofPlayers() {
 		return amountOfPlayers;
 	}
 }

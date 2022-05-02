@@ -1,22 +1,27 @@
 package Elements;
 
-public class Pit extends Obstacle{
-	public int effect(int score) {
-		return -score;
-	}
+public class Pit extends Obstacle{ // 100 % used
+    //if score is below 0 returns 0, if  positive reset score
+    public int effect(int score) {
+        if(score<0) return 0;// used
+        return -score;
+    }
 
-	public String message() {
-		return "Pit";
-	}
+    //returns string, used in SaveGame
+    public String message() { // used
+        return "Pit";
+    } // used
 
-	//method refer to method for reseting robot
-	@Override
-	public void move(Robot robot) {
-		robot.reset();
-	}
-	@Override
-	public Pit construct() {
-		return new Pit();
-	}
-	
+    @Override
+    //method resets robot
+    public void move(Robot robot) { // used
+        robot.reset();
+    }
+
+    @Override
+    //Instantiate the gear in when called in factory
+    public Pit construct() { // used
+        return new Pit();
+    } //
+
 }

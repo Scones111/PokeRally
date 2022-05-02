@@ -60,11 +60,15 @@ Feature: Robot Scenarios
     And score is decreased
 
     Examples:
-    | score |
-    |1      |
-    |2      |
-    |3      |
-
+      | score |
+      |1      |
+      |2      |
+      |3      |
+      |4      |
+      |5      |
+      |6      |
+      |7      |
+      |8      |
 
 
   @tag6
@@ -121,7 +125,7 @@ Feature: Robot Scenarios
       |	3			| 3  | 4  |
 
   @tag9
- Scenario Outline: Trampoline
+  Scenario Outline: Trampoline
     Given a board with one robot
     And board set up with elements
     And a trampoline
@@ -131,24 +135,24 @@ Feature: Robot Scenarios
     And robot is at least <int> fields away
 
     Examples:
-    |int|
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
-    |3  |
+      |int|
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
+      |3  |
 
 
   @tag10
@@ -197,7 +201,3 @@ Feature: Robot Scenarios
     When the robot moves
     And robot hits element
     Then the score is incremented by 5
-
-
-
-

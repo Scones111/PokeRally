@@ -89,8 +89,3 @@ Feature: Player and Hand
     And player plays hand
     Then robot moved
     And players hand is empty
-
-
-
-
-

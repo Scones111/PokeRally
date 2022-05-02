@@ -1,7 +1,6 @@
 package LoadSave;
 
-
-import Board.*;
+import Board.Board;
 import Elements.*;
 import Gameplay.Game;
 import Player.Player;
@@ -11,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class LoadGame {
@@ -19,7 +17,7 @@ public class LoadGame {
     private String line = "";
     private Game game;
     private Board b;
-
+    private
 
     ArrayList<String> robotData;
     ArrayList<String> checkPointData;
@@ -40,33 +38,32 @@ public class LoadGame {
         this.boardPath = "DataOfBoard.csv";
     }
 
+    public LoadGame(String s, String r, String t, String y) {
+        this.robotPath = s;
+        this.obstaclePath = r;
+        this.checkPointPath = t;
+        this.boardPath = y;
+    }
+
     public Game load(){
         setUpForLoadedGame(robotData,obstacleData,checkPointData,boardData);
         game.setBoard(b);
         return game;
     }
 
-    public LoadGame(String s, String r, String t, String y) {
-        this.robotPath = s;
-        this.obstaclePath = r;
-        this.checkPointPath = t;
-        this.boardPath = y;
-    } // used in scenario testing
-
-    public int tryLoad() {
-        try {
+    public int tryLoad(){
+        try{
             loadRobot(robotPath);
             loadObstacles(obstaclePath);
             loadCheckpoints(checkPointPath);
             loadBoard(boardPath);
-        } catch (IOException e) {
+        } catch (IOException e){
             return 1;
         }
         return 0;
     }
 
     public void loadRobot(String robotPath) throws FileNotFoundException {
-
         String[] robot;
         robotData = new ArrayList<>();
         try {
@@ -85,7 +82,6 @@ public class LoadGame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void loadObstacles(String obstaclePath) throws FileNotFoundException {
@@ -118,7 +114,6 @@ public class LoadGame {
                 checkPointData.add(checkpoints[2]);
                 checkPointData.add(checkpoints[3]);
             }
-        System.out.println("Checkpoint Data: "+checkPointData);
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException();
         } catch (IOException e) {
@@ -140,7 +135,6 @@ public class LoadGame {
                 boardData.add(board[3]);
                 boardData.add(board[4]);
             }
-            System.out.println("Board Data: "+boardData);
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException();
         } catch (IOException e) {
@@ -148,18 +142,10 @@ public class LoadGame {
         }
     }
 
-//    public Game loadGame(){
-//
-//        setUpForLoadedGame();
-//
-//    }
-
     public void setUpForLoadedGame(ArrayList<String> robots, ArrayList<String> obstacles, ArrayList<String> checkpoints,
                                    ArrayList<String> board) {
-        int dimensions = Integer.parseInt(board.get(1));
-        b = Board.getBoard();
-//        b = new Board(dimensions); // instantiate board
-        game = new Game();
+        b = Board.getBoard(); // instantiate board
+        game = new Game(); // instantiate game
         addLoadedObstacles(obstacles); // set up obstacles
         addLoadedCheckPoints(checkpoints); // set up checkpoints
         addLoadedRobots(robots); // set up robots
@@ -170,13 +156,13 @@ public class LoadGame {
             if(Objects.equals(obstacles.get(i), "Pit")) {
                 loadPit(obstacles, i);
             }
-            else if (Objects.equals(obstacles.get(i), "Conveyer")) { // need to have conveyer in obstacle list
+            else if (Objects.equals(obstacles.get(i), "Conveyor")) {
                 loadConveyor(obstacles, i);
             }
-            else if (Objects.equals(obstacles.get(i), "Trampoline")) {// need to have trampoline in obstacle list
+            else if (Objects.equals(obstacles.get(i), "Trampoline")) {
                 loadTrampoline(obstacles, i);
             }
-            else if (Objects.equals(obstacles.get(i), "Gear")) { // need to have gear in obstacle list
+            else if (Objects.equals(obstacles.get(i), "Gear")) {
                 loadGear(obstacles, i);
             }
         }
@@ -191,9 +177,6 @@ public class LoadGame {
 
     private void loadTrampoline(ArrayList<String> obstacles, int i) {
         Coordinates c = new Coordinates(Integer.parseInt(obstacles.get(i+1)), Integer.parseInt(obstacles.get(i+2)));
-        System.out.println("Trampoline");
-        System.out.print("Coordinates: ");
-        c.print();
         Obstacle o = new Trampoline();
         o.setCoordinates(c);
         b.add(o);
@@ -201,9 +184,6 @@ public class LoadGame {
 
     private void loadConveyor(ArrayList<String> obstacles, int i) {
         Coordinates c = new Coordinates(Integer.parseInt(obstacles.get(i+1)), Integer.parseInt(obstacles.get(i+2)));
-        System.out.println("Conveyor");
-        System.out.print("Coordinates: ");
-        c.print();
         Obstacle o = new Conveyer();
         o.setCoordinates(c);
         b.add(o);
@@ -211,33 +191,22 @@ public class LoadGame {
 
     private void loadPit(ArrayList<String> obstacles, int i) {
         Coordinates c = new Coordinates(Integer.parseInt(obstacles.get(i+1)), Integer.parseInt(obstacles.get(i+2)));
-        System.out.println("Pit");
-        System.out.print("Coordinates: ");
-        c.print();
         Obstacle o = new Pit();
         o.setCoordinates(c);
         b.add(o);
     }
 
     private void addLoadedRobots(ArrayList<String> robots) {
-        System.out.println("Robots: "+robots);
         boolean multiplayer = false;
         if (robots.size() > 6) multiplayer = true;
         Robot robot = new Robot(robots.get(0),b);
         robot.setOrientation(Integer.parseInt(robots.get(1)));
         robot.setScore(Integer.parseInt(robots.get(2)));
         robot.setCheckCount(Integer.parseInt(robots.get(3)));
-        System.out.println("Coordinates integer: "+Integer.parseInt(robots.get(4))+","+Integer.parseInt(robots.get(5)));
         Coordinates coordinates = new Coordinates(Integer.parseInt(robots.get(4)),Integer.parseInt(robots.get(5)));
-        System.out.print("Coordinates class: ");
-        coordinates.print();
-//        robot.setCoordinates(Integer.parseInt(robots.get(4)),Integer.parseInt(robots.get(5)));
-//        System.out.println("Coordinates: "+Integer.parseInt(robots.get(4))+","+Integer.parseInt(robots.get(5)));
-        System.out.print("Coordinates robot: ");
-        robot.getCoordinates().print();
         robot.setSignature("Robot1_");
         if(multiplayer) robot.setStart(0,0);
-        else robot.setStart(b.getDimensions()/2,b.getDimensions()/2 );
+        //  else robot.setStart(b.getDimensions()/2,b.getDimensions()/2 );
         robot.setCoordinates(coordinates);
         b.add(robot);
         game.addPlayer(new Player(robot));
@@ -249,15 +218,7 @@ public class LoadGame {
             robot.setScore(Integer.parseInt(robots.get(8)));
             robot.setCheckCount(Integer.parseInt(robots.get(9)));
             robot.setCoordinates(Integer.parseInt(robots.get(10)),Integer.parseInt(robots.get(11)));
-            System.out.println("Coordinates: "+Integer.parseInt(robots.get(10))+","+Integer.parseInt(robots.get(11)));
             coordinates = new Coordinates(Integer.parseInt(robots.get(10)),Integer.parseInt(robots.get(11)));
-            System.out.print("Coordinates class: ");
-            coordinates.print();
-//        robot.setCoordinates(Integer.parseInt(robots.get(4)),Integer.parseInt(robots.get(5)));
-//        System.out.println("Coordinates: "+Integer.parseInt(robots.get(4))+","+Integer.parseInt(robots.get(5)));
-
-            System.out.print("Coordinates robot: ");
-            robot.getCoordinates().print();
             robot.setSignature("Robot2_");
             robot.setStart(b.getDimensions()-1,b.getDimensions()-1);
             robot.setCoordinates(coordinates);
@@ -266,36 +227,24 @@ public class LoadGame {
             game.setMultiplayer(true);
 
         }
-        System.out.println("Coordinates of elements on the board:");
-        for(Element e : b.getElementsOnBoard()){
-            System.out.print("Element "+e.message()+" - ");
-            e.getCoordinates().print();
-        }
         game.addRobots();
     }
 
     private void addLoadedCheckPoints(ArrayList<String> checkpoints) {
-        System.out.println("Number of checkpoints: "+checkpoints.size()/4);
         for (int i = 0; i < checkpoints.size(); i++) {
             if (checkpoints.get(i).contains("Checkpoint")) {
                 loadCheckPoint(checkpoints, i);
             }
         }
-        System.out.println("Number of checkpoints on the board "+b.getCheck());
     }
 
     private void loadCheckPoint(ArrayList<String> checkpoints, int i) {
         int ID = Integer.parseInt(checkpoints.get(i + 1));
         Element c = new Checkpoint(ID);
         Coordinates cord = new Coordinates(Integer.parseInt(checkpoints.get(i + 2)), Integer.parseInt(checkpoints.get(i + 3)));
-//        System.out.println("Checkpoint");
-//        System.out.print("Coordinates: ");
-//        cord.print();
-//        System.out.println("Number of checkpoints: "+checkpoints.size()/4);
-        b.setCheck(checkpoints.size()/4);
-//        System.out.println("Number of checkpoints on the board");
+        b.setCheck(checkpoints.size());
         c.setCoordinates(cord);
         b.add(c);
     }
-}
 
+}

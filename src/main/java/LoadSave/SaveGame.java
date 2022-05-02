@@ -1,19 +1,17 @@
 package LoadSave;
 
-
-import Elements.Robot;
 import Board.Board;
+import Elements.Checkpoint;
 import Elements.Element;
+import Elements.Obstacle;
+import Elements.Robot;
 import Gameplay.Game;
 import Player.Hand;
-import Elements.Checkpoint;
-import Elements.Obstacle;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
 public class SaveGame {
     private Game game;
 
@@ -32,7 +30,6 @@ public class SaveGame {
             return 1;
         }
         return 0;
-
     }
 
     public void savingElements(ArrayList<Element> elementsOnBoard) throws FileNotFoundException {
@@ -50,8 +47,6 @@ public class SaveGame {
         ArrayList<Obstacle> Obstacles = new ArrayList<>();
         ArrayList<Checkpoint> Checkpoints = new ArrayList<>();
 
-        System.out.println(elementsOnBoard);
-
         for(Element element : elementsOnBoard) {
 
             if(element instanceof Robot) {
@@ -61,6 +56,7 @@ public class SaveGame {
             else if(element instanceof Obstacle) {
                 Obstacles.add((Obstacle) element);
             }
+
             else if(element instanceof Checkpoint) {
                 Checkpoints.add((Checkpoint) element);
             }
@@ -83,20 +79,11 @@ public class SaveGame {
         checkpointout.close();
     }
 
-
     public void savingBoard(Board board) throws FileNotFoundException {
         File boardcsvfile = new File("DataOfBoard.csv");
         PrintWriter boardout = new PrintWriter(boardcsvfile);
 
         boardout.printf("%d,%d,%d,%d,%d\n",board.getNumRobots(),board.getDimensions(),board.getNumObstacles(),board.getCheck(),board.getElements());
         boardout.close();
-    }
-
-    public void savingDifficulty(String difficulty) throws FileNotFoundException {
-        File difficultycsvfile = new File("difficulty.csv");
-        PrintWriter difficultyout = new PrintWriter(difficultycsvfile);
-
-        difficultyout.printf("%s\n",difficulty);
-        difficultyout.close();
     }
 }

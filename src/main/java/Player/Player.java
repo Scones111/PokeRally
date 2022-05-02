@@ -4,50 +4,62 @@ import Elements.Robot;
 
 public class Player{
 
+    private Hand hand;
+    private Robot robot;
 
-	private Hand hand;
-	private Robot robot;
-
-	public Player(Robot robot) {
-		this.robot = robot;
+    //constructor instantiates Hand
+    //and ties a robot object to the player
+    public Player(Robot robot) { // used
+        this.robot = robot;
 		hand = new Hand(5);
-	}
+    }
 
-	public String play() {
-		return hand.play(robot); // used
-	}
+    //plays the card on hand
+    public String play() {
+        return hand.play(robot);
+    }
 
-	public boolean emptyHand() {
-		return hand.isEmpty();
-	}
-
-
-	public void fillHand(Deck deck) { // used
-		hand.fill(deck);
-	}
-
-	public void setOrdered(boolean b) { // used
-		hand.ordered(b);
-	}
+    //return a boolean on whether hand is empty
+    public boolean emptyHand() {
+        return hand.isEmpty();
+    } // used
 
 
-	public String[] getTitles() {
-		return hand.getTitles();
-	}
+    //player calls method to fill the han
+    public void fillHand(Deck deck) { // used
+        hand.fill(deck);
+    }
 
-	public Hand getHand(){
-		return hand;
-	}
 
-	public int getScore() {
-		return robot.getScore();
-	}
+    //set order to false, used in testing
+    public void setOrdered(boolean b) { // used
+        hand.ordered(b);
 
-	public int getCheckpoints() {
-		return robot.getCheckCount();
-	}
+    }
 
-	public Robot getRobot() {
-		return robot;
-	}
+    //returns the titles of the cards on hand
+    public String[] getTitles() {
+        return hand.getTitles();
+    }
+
+    //returns the players hand
+    public Hand getHand(){
+        return hand;
+    }
+
+    //returns the players/robots score
+    public int getScore() {
+        return robot.getScore();
+    }
+
+    //returns the amount of correct checkpoints the robot has hit
+    public int getCheckpoints() {
+        return robot.getCheckCount();
+    }
+
+    //returns the robot
+    public Robot getRobot() {
+        return robot;
+    }
+
 }

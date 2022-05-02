@@ -1,16 +1,9 @@
 package Board;
+
+import Elements.*;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
-import Elements.Checkpoint;
-import Elements.Coordinates;
-import Elements.Element;
-import Elements.Obstacle;
-import Elements.Robot;
-
-
+import java.util.Objects;
 
 public class Board {
 	private int numObstacles;
@@ -18,117 +11,111 @@ public class Board {
 	private int numRobots;
 	private int dimensions;
 	private int counter = 0;
-	private Random rnd = new Random();
 	private static Board board = null;
-	private static ArrayList<Element> elements;
-	// getter for all the elements on the board
-	public ArrayList<Element> getElementsOnBoard(){
-		return elements;}
 
-	//method for initiating board as a singleton
+	private static ArrayList<Element> elements;
+
+	public ArrayList<Element> getElementsOnBoard() {
+		return elements;
+	} //used
+
 	public static Board getBoard() {
 		if(board == null) {
 			board = new Board();
 		} else {
 			elements = new ArrayList<>();
+
 		}
 		return board;
 	}
 
-	
-	public Board(int cols) {
-		dimensions = cols;
+	public Board() { // used
+		dimensions = 8;
 		elements = new ArrayList<Element>();
 	}
-	
-	
-	public Board() {
-		System.out.println("Board initiated");
-		dimensions = 8;
-		elements = new ArrayList<>();
-	}
+
 
 	public int getDimensions() {
 		return dimensions;
-	}
-	
+	} // used
+
 	//overload for multiplayer
-	public void setUp(Robot robot, int obs, int check, ObstacleFactory factory) {
+	//sets up the board with elements
+	public void setUp(Robot robot, int obs, int check, ObstacleFactory factory) { // used
 		numObstacles = obs;
 		numCheckpoints = check;
 		numRobots = 1;
-		int center = (int) (dimensions/2);
-		
+		int center = (int) (dimensions / 2);
+
 		//robot is handled
-		robot.setStart(center,center);
+		robot.setStart(center, center);
 		add(robot);
-		
-		//checkpoints are handled
-		Checkpoint c;
-		for(int i = 0; i <= numCheckpoints; i++) {
-			c = new Checkpoint(i);
-			addRandom(c);
-		}
-		
-		//obstacles are handled
-		Obstacle o;
-		for(int i = 0; i < obs;i++) {
-			o = factory.pick();
-			addRandom(o);
-		}
 
-	}
-
-	//multiplayer setup
-	public void setUp(Robot robot1, Robot robot2, int obs, int check, ObstacleFactory factory) {
-		numObstacles = obs;
-		numCheckpoints = check;
-		numRobots = 1;
-		int center = (int) (dimensions/2);
-		
-		//robots are handled
-		robot1.setStart(0, 0);
-		robot1.setOrientation(2);
-		robot2.setStart(dimensions-1, dimensions-1);
-		add(robot1);
-		add(robot2);
-		
 		//checkpoints are handled
 		Checkpoint c;
 		for(int i = 0; i < numCheckpoints; i++) {
 			c = new Checkpoint(i);
 			addRandom(c);
 		}
-		
 		//obstacles are handled
 		Obstacle o;
-		for(int i = 0; i < numObstacles;i++) {
+		for(int i = 0; i < numObstacles; i++){ // not used
 			o = factory.pick();
 			addRandom(o);
 		}
-
 	}
 
-	//used in loadGame for loading in checkpoint
-	public void setCheck(int c){ numCheckpoints = c;}
+	public void setUp(Robot robot1, Robot robot2,  int obs, int check, ObstacleFactory factory) { // used
+		numObstacles = obs;
+		numCheckpoints = check;
+		numRobots = 2;
+		int center = (int) (dimensions / 2);
 
-	//used for checking winner and saving the board
+		//robot is handled
+		robot1.setStart(0, 0);
+		robot2.setStart(dimensions-1, dimensions-1);
+		add(robot1);
+		add(robot2);
+
+		//checkpoints are handled
+		Checkpoint c;
+		for (int i = 0; i < numCheckpoints; i++) {
+			c = new Checkpoint(i);
+			addRandom(c);
+		}
+		//obstacles are handled
+		Obstacle o;
+		for(int i = 0; i < obs; i++){
+			o = factory.pick();
+			addRandom(o);
+		}
+	}
+
+	//set number of checkpoints
+	public void setCheck(int c){
+		numCheckpoints = c;
+	}
+
+	//return number of cehckpoint, used in winner method
 	public int getCheck() {
 		return numCheckpoints;
-	}
+	} // used
 
-	public boolean isEmpty(Coordinates coordinates) {
+	//check if a coordinate exist at the coordinate
+	public boolean isEmpty(Coordinates coordinates) { // used
 		return !(elements.stream().anyMatch(o -> o.getCoordinates().equals(coordinates)));
 	}
 
-	public void add(Element e) {
-		if(!elements.contains(e)) {
+	//add the element with a coordinate to the elements arrayList
+	public void add(Element e) { // used
+		if (!elements.contains(e)) {
 			counter++;
 			elements.add(e);
 		}
 	}
 
-	public void addRandom(Element e) {
+	//give the input element a random coordinate
+	public void addRandom(Element e) { // used
 		int x = (int) (dimensions*Math.random());
 		int y = (int) (dimensions*Math.random());
 		Coordinates c = new Coordinates(x,y);
@@ -139,31 +126,30 @@ public class Board {
 		}
 		e.setCoordinates(c);
 		add(e);
-		
 	}
 
+	//method checks if board contains element
 	public boolean contains(Element e) {
 		return elements.stream().anyMatch(o -> o.equals(e));
-	}
+	} // used
 
-	// returns the amount of elements on board
+	//method return amount of elements on board, used in saving
 	public int getElements() {
 		return elements.size();
-	}
+	} // used in saving
 
-	//checks if element is on coordinate
-	public Element getElement(Coordinates c) {
-		return (elements.stream().filter(o -> o.getCoordinates().equals(c)).findFirst().orElse(null));
+	//gets the element for the coordinate, used to move robot
+	public Element getElement(Coordinates c) { // used
+		return (Objects.requireNonNull(elements.stream().filter(o -> o.getCoordinates().equals(c)).findFirst().orElse(null)));
 	}
-
-	public Integer getNumRobots() {
+	//return number of robot
+	public int getNumRobots() { //used for saving
 		return numRobots;
-	}
+	} // used in saving
 
-	//used in SaveGame to save number of robots
-	public int getNumObstacles() {
+	//return number of obstacle
+	public int getNumObstacles() { //used for saving
 		return numObstacles;
-	}
-
+	} // used in saving
 
 }

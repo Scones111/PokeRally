@@ -13,6 +13,7 @@ public class Conveyer extends Obstacle{
 	}
 
 	@Override
+	//method moves robot in random direction
 	public void move(Robot robot) {
 		Coordinates coordinates = new Coordinates(getCoordinates().getx(),getCoordinates().gety());
 		int r = (int) (2*Math.random());
@@ -30,11 +31,12 @@ public class Conveyer extends Obstacle{
 		}
 	}
 	
-
+	//returns a string used for saving the obstacle
 	public String message() {
 		return "Conveyor";
 	}
-	
+
+	//used in ObstacleFactory to Instantiate new conveyor
 	@Override
 	public Conveyer construct() {
 		return new Conveyer();

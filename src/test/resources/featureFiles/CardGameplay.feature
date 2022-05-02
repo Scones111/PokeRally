@@ -63,10 +63,6 @@ Feature: Card and Deck in the game
     Then robot turned <orientation>
 
     Examples:
-    | action| orientation |
-    |turnL  | left        |
-    |turnR  | right       |
-
-
-
-
+      | action| orientation |
+      |turnL  | left        |
+      |turnR  | right       |

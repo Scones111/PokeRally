@@ -1,20 +1,20 @@
 package Elements;
 
-public class Obstacle extends Element {
-	public int effect(int score) {
-		return -3;
-	}
+public class Obstacle extends Element { // 100 %& used
 
+    //overwritten
+    public int effect(int score) {
+        return -3;
+    } // used
 
-	public String message() {
-		return "obstacle";
-	}
-	
-	public Obstacle construct() {
-		return new Obstacle();
-	}
+    //overwritten
+    public String message() {
+        return "obstacle";
+    } // not used
+
+    //overwritten
+    public Obstacle construct() {
+        return new Obstacle();
+    } // not used
 }
-
-
-
 

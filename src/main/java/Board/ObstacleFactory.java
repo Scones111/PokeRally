@@ -1,45 +1,43 @@
 package Board;
 
-import java.util.ArrayList;
-
 import Elements.*;
+
+import java.util.ArrayList;
 
 public class ObstacleFactory {
 	private ArrayList<Obstacle> obstacles;
-	public ObstacleFactory() {
-		obstacles = new ArrayList<Obstacle>();
-	}
-	
-	public Obstacle pick() {
-		if(!(obstacles.isEmpty())) {
-			int rand = (int) (obstacles.size() * Math.random());
-			return obstacles.get(rand).construct();
-		}
-		else return null;
-	}
-	
-	public void add(Obstacle e) {
-		obstacles.add(e);
-	}
-	
-	public void print() {
-		for(Obstacle o : obstacles) {
-			System.out.println(o.message());
-		}
+	//constructor instantiate new Arraylist
+	public ObstacleFactory() { // used
+		obstacles = new ArrayList<>();
 	}
 
+	//method return random obstacle arraylist
+	public Obstacle pick() {
+		if(!(obstacles.isEmpty())) { // used
+			int rand = (int) (obstacles.size() *  Math.random());
+			System.out.println(rand);
+			return obstacles.get(rand).construct();
+		}
+		else return null; // not used
+	}
+
+	//method used to add obstacle to arralist
+	public void add(Obstacle e) {
+		obstacles.add(e);
+	} // used
+
+
+	//method return true if it contains an element, used in testing
 	public boolean contains(Obstacle e) {
 		return obstacles.contains(e);
+	} // used
+
+	//method instantiates and add objects to ArrayList
+	public void defaultFill() { // used
+		obstacles.add(new Pit());
+		obstacles.add(new Gear());
+		obstacles.add(new Conveyer());
+		obstacles.add(new Trampoline());
 	}
-	//gives default obstacles to list
-	public void defaultFill() {
-		Obstacle o = new Pit();
-		this.add(o);
-		o = new Gear();
-		add(o);
-		o = new Conveyer();
-		add(o);
-		o = new Trampoline();
-		add(o);
-	}
+
 }

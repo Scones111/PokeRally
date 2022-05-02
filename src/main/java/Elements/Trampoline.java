@@ -2,18 +2,18 @@ package Elements;
 
 import java.util.Random;
 
-public class Trampoline extends Obstacle{
+public class Trampoline extends Obstacle {
 
-    //overwritten method, decrement score
-    public int effect(int score) {
-        return -1;
+    @Override
+    //decrements the score
+    public int effect(int x) {
+        return -3;
     }
 
-    //overwritten method, moves robot to random coordinate between 3-5 tiles away
     @Override
+    //method used when robot hits trampoline, gives new coordinates at least 3 tiles away
     public void move(Robot robot) {
         Coordinates coordinates = new Coordinates(robot.getCoordinates().getx(), robot.getCoordinates().gety());
-        System.out.println("robot coordinates..");
         coordinates.print();
         int rx;
         int ry;
@@ -38,49 +38,15 @@ public class Trampoline extends Obstacle{
         coordinates.set(rx, ry);
         robot.move(coordinates);
     }
-
-    //overwritten method, returns string used for saving the game
+    @Override
+    //returns the name of the obstacle
     public String message() {
         return "Trampoline";
     }
 
-    //overwritten method, used in factory when random obstacle is initialized.
-    @Override
+    //method construct new obstacle object, used in ObstacleFactory
     public Trampoline construct() {
         return new Trampoline();
     }
 
 }
-
-
-//public class Trampoline extends Obstacle {
-//
-//	@Override
-//    public String message() {
-//		return "Trampoline";
-//	}
-//
-//	@Override
-//	public int effect(int x) {
-//		return 0;
-//	}
-//
-//	@Override
-//	public void move(Robot robot) {
-//		Coordinates coordinates = new Coordinates(getCoordinates().getx(),getCoordinates().gety());
-//		int rx; int ry;
-//		rx = (int) (1+2*Math.random());
-//		ry = (int) (Math.sqrt(9-rx*rx)+5*Math.random());
-//		//robot has to be moved at least 3
-//		while(!(robot.possibleMove(rx,ry) && Math.abs(rx-coordinates.getx())>2 && Math.abs(ry-coordinates.gety())>2)) {
-//			rx = (int) (1+2*Math.random());
-//			ry = (int) (Math.sqrt(9-rx*rx)+5*Math.random());
-//
-//		}
-//		coordinates.set(rx, ry);
-//		robot.move(coordinates);
-//	}
-//
-//
-//
-//}
